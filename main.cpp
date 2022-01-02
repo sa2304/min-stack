@@ -1,31 +1,39 @@
 #include <cassert>
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
 class MinStack {
  public:
-  MinStack() {
-
-  }
+  MinStack() = default;
 
   void push(int val) {
-    // FIXME
+    values_.push_back(val);
+    if (minimums_.empty() || val <= minimums_.back()) {
+      minimums_.push_back(val);
+    }
   }
 
   void pop() {
-    // FIXME
+    int val = values_.back();
+    values_.pop_back();
+    if (minimums_.back() == val) {
+      minimums_.pop_back();
+    }
   }
 
   int top() {
-    // FIXME
-    return 0;
+    return values_.back();
   }
 
   int getMin() {
-    // FIXME
-    return 0;
+    return minimums_.back();
   }
+
+ private:
+  vector<int> values_;
+  vector<int> minimums_;
 };
 
 void TestMinStack() {
@@ -50,7 +58,7 @@ void TestMinStack() {
   assert(-2 == stack.getMin());
   stack.pop();
   assert(-1 == stack.top());
-  assert(-2 == stack.getMin());
+  assert(-1 == stack.getMin());
   stack.pop();
   assert(2 == stack.top());
   assert(1 == stack.getMin());
